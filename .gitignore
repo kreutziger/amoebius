@@ -1,0 +1,24 @@
+# logs
+logs
+*.log
+
+# runtime data
+pids
+*.pid
+*.seed
+
+# grunt intermediate storage
+.grunt
+
+# compiled binary addons
+build/Release
+
+# dependency directory
+node_modules
+
+# vim edit files
+*.swp
+*.swo
+
+# mongo data files
+data/
