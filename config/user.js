@@ -53,4 +53,28 @@ user_schema.methods.compare_pass = function(user_pass, callback) {
     });
 };
 
-module.exports = mongoose.model('User', user_schema);
+user_schema.statics.generate_login_id = (function() {
+    function rand_str() {
+        return Math.floor((1 + Math.random()) * 0x10000).toString(16)
+            .substring(1);
+    }
+    return function() {
+        return rand_str() + rand_str() + '-' + rand_str() + '-' + rand_str() +
+            '-' + rand_str() + '-' + rand_str() + rand_str() + rand_str();
+    };
+}());
+
+user_schema.methods.destroy_login_id = function(callback) {
+    var self = this;
+    self.login_session_id = user_model.generate_login_id();
+    self.save(callback);
+};
+
+user_schema.methods.create_login_id = function(callback) {
+    var self = this;
+    self.login_session_id = '';
+    self.save(callback);
+};
+
+var user_model = mongoose.model('User', user_schema);
+module.exports = user_model;

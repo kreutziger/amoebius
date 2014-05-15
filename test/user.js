@@ -47,4 +47,41 @@ describe('user', function() {
         });
 
     });
+
+    describe('#login_session_id', function() {
+        it('should create a login session id', function() {
+            user.findOne({name: test_user}, function(err, user) {
+                if (err) {
+                    done(err);
+                } else {
+                    user.create_login_id();
+                }
+            });
+            user.findOne({name: test_user}, function(err, user) {
+                if (err) {
+                    done(err);
+                } else {
+                    assert.notEqual(user.login_session_id, "",
+                                    "new login_session_id there");
+                }
+            });
+        });
+        it('should destroy a login session id', function() {
+            user.findOne({name: test_user}, function(err, user) {
+                if (err) {
+                    done(err);
+                } else {
+                    user.destroy_login_id();
+                }
+            });
+            user.findOne({name: test_user}, function(err, user) {
+                if (err) {
+                    done(err);
+                } else {
+                    assert.equal(user.login_session_id, "",
+                                 "no login_session_id available");
+                }
+            });
+        });
+    });
 });
