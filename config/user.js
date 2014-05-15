@@ -13,19 +13,19 @@ var user_schema = new Schema({
 
 user_schema.path('name').validate(function(name) {
     return name.length > 0;
-}, 'user name cannot be blank');
+}, 'invalid user name');
 
 user_schema.path('salted_pass').validate(function(salted_pass) {
     return salted_pass.length > 0;
-}, 'user password cannot be blank');
+}, 'invalid user password');
 
 user_schema.path('email').validate(function(email) {
     return email.length > 0;
-}, 'user email addresse cannot be blank');
+}, 'invalid user email');
 
 user_schema.path('admin').validate(function(admin) {
     return (typeof admin) === 'boolean';
-}, 'admin value must be boolean');
+}, 'invalid admin');
 
 user_schema.pre('save', function(next) {
     var self = this;

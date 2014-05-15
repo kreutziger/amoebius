@@ -39,4 +39,5 @@ doc_schema.methods.update_comment = function (new_comment, callback) {
     self.save(callback);
 };
 
-module.exports = mongoose.model('Document', doc_schema);
+var doc_model = mongoose.model('Document', doc_schema);
+module.exports = doc_model;
