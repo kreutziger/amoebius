@@ -23,7 +23,7 @@ describe('user', function() {
         it('should save with error (no duplicates)', function(done){
             var my_user = new user({name:test_user, salted_pass:"test", 
                                    email: "test", admin: true});
-            assert.throws(my_user.save, /duplicate key/, 'user.name is: ' +
+            assert.throws(my_user.save, Error, 'user.name is: ' +
                           my_user.name);
             done();
         });
