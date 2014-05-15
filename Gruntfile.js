@@ -9,9 +9,9 @@ module.exports = function(grunt) {
         mochaTest: {
             test: {
                 options: {
-                    reporter: 'nyan'
+                    //reporter: 'nyan'
+                    reporter: 'spec'
                 },
-            ignoreLeaks: false,
             src: ['test/**/*.js']
             }
         }
@@ -61,5 +61,5 @@ module.exports = function(grunt) {
         });
     });
 
-    grunt.registerTask('default', 'mochaTest');
+//    grunt.registerTask('default', 'mochaTest');
 };

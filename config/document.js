@@ -10,16 +10,21 @@ var doc_schema = new Schema({
     from_user: {type: String, required: true}
 });
 
-doc_schema.methods.create_doc = function(name, type, comment, from_user,
-    callback) {
-    var self = this;
-    // TODO from_user check
-    if (name !== "" && type !== "" && from_user !== "") {
-        var create_date = Date.now();
-        return self.model({name: name, type: type, comment: comment,
-            from_user: from_user, create_date: create_date}).save(callback);
-    }
-};
+doc_schema.path('name').validate(function(name) {
+    return name.length > 0;
+}, 'invalid document name');
+
+doc_schema.path('type').validate(function(type) {
+    return type.length > 0;
+}, 'invalid document type');
+
+doc_schema.path('from_user').validate(function(from_user) {
+    return from_user.length > 0;
+}, 'invalid document creator');
+
+doc_schema.path('create_date').validate(function(create_date) {
+    return Date.now() > create_date || 0 > create_date;
+}, 'invalid document create date');
 
 doc_schema.methods.update_binary = function (new_path, callback) {
     var self = this;
@@ -43,5 +48,4 @@ doc_schema.methods.update_comment = function (new_comment, callback) {
     });
 };
 
-var doc_model = mongoose.model('Doc', doc_schema);
-exports.doc_model = doc_model;
+module.exports = mongoose.model('Document', doc_schema);
