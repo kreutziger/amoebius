@@ -1,8 +1,12 @@
 TESTS = test/**/*.js
-REPORTER = --reporter spec
+SPEC_REPORTER = --reporter spec
+NYAN_REPORTER = --reporter nyan
 OPTS = --no-colors --check-leaks 
 
-test:
-	mocha $(REPORTER) $(OPTS) $(TESTS)
+spec_test:
+	mocha $(SPEC_REPORTER) $(OPTS) $(TESTS)
 
-.PHONY: test
+nyan_test:
+	mocha $(NYAN_REPORTER) $(OPTS) $(TESTS)
+
+.PHONY: nyan_test
