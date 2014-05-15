@@ -66,13 +66,34 @@ user_schema.statics.generate_login_id = (function() {
 
 user_schema.methods.destroy_login_id = function(callback) {
     var self = this;
-    self.login_session_id = user_model.generate_login_id();
+    self.login_session_id = '';
     self.save(callback);
 };
 
 user_schema.methods.create_login_id = function(callback) {
     var self = this;
-    self.login_session_id = '';
+    self.login_session_id = user_model.generate_login_id();
+    self.save(callback);
+};
+
+user_schema.methods.update_email = function(email, callback) {
+    var self = this;
+    self.email = email;
+    self.save(callback);
+};
+
+user_schema.methods.update_admin = function(admin, callback) {
+    var self = this;
+    if (typeof admin !== 'boolean') {
+        admin = (admin === 'true');
+    }
+    self.admin = admin;
+    self.save(callback);
+};
+
+user_schema.methods.update_password = function(password, callback) {
+    var self = this;
+    self.salted_pass = password;
     self.save(callback);
 };
 

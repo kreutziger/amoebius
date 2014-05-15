@@ -7,6 +7,7 @@ var doc_schema = new Schema({
     type: {type: String},
     create_date: {type: Number},
     comment: {type: String},
+    path: {type: String},
     from_user: {type: String, required: true}
 });
 
@@ -26,26 +27,16 @@ doc_schema.path('create_date').validate(function(create_date) {
     return Date.now() > create_date || 0 > create_date;
 }, 'invalid document create date');
 
-doc_schema.methods.update_binary = function (new_path, callback) {
+doc_schema.methods.update_path = function (new_path, callback) {
     var self = this;
-    self.findById(self.id, function (err, doc) {
-        if (err) {
-            return callback(err);
-        } 
-        doc.path = new_path;
-        doc.save(callback);
-    });
+    self.path = new_path;
+    self.save(callback);
 };
 
 doc_schema.methods.update_comment = function (new_comment, callback) {
     var self = this;
-    self.findById(self.id, function(err, doc) {
-        if (err) {
-            return callback(err);
-        }
-        doc.comment = new_comment;
-        doc.save(callback);
-    });
+    self.comment = new_comment;
+    self.save(callback);
 };
 
 module.exports = mongoose.model('Document', doc_schema);
