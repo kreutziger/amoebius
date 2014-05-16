@@ -7,6 +7,12 @@ html(ng-app="amoebius")
     link(rel="stylesheet", href="/css/app.css")
   body
     div
+      if !user
+        a(ui-sref='login') Login
+      if user
+        p Hello
+          a(ui-sref='account') #{user.username}
+        a(href='logout') Logout
       h2 Welcome to amoebius
       <div ui-view></div>
     script(src='js/lib/angular/angular.js')

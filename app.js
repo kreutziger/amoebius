@@ -15,11 +15,12 @@ var compress = require('compression');
 var logger = require('morgan');
 var cookie_parser = require('cookie-parser');
 var serve_static = require('serve-static');
-//var method_override = require('method-override');
 var express_session = require('express-session');
 var error_handler = require('errorhandler');
+var body_parser = require('body-parser');
 
 var routes = require('./routes/index');
+var user_routes = require('./routes/user');
 
 var app = express();
 
@@ -43,8 +44,8 @@ app.use(logger({
 app.use(compress({
     threshhold: 512
 }));
+app.use(body_parser());
 app.use(cookie_parser());
-//app.use(method_override());
 app.use(express_session({
     name: 'doculink',
     secret: 'that-really-secret-key'
@@ -61,6 +62,13 @@ if ('development' === app.get('env')) {
         showStack: true
     }));
 }
+
+app.get('/', routes.index);
+app.get('/partials/:name', routes.partials);
+
+app.get('/login', user_routes.get_login);
+app.post('/login', user_routes.post_login);
+app.get('/logout', user_routes.logout);
 
 app.get('*', routes.index);
 

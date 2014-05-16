@@ -1,0 +1,11 @@
+form(action='/login', method='post')
+  if message
+    p= message
+  div
+    label(for='user') Username
+    input(type='text', name='username', id='user')
+  div
+    label(for='pass') Password
+    input(type='password', name='password', id='pass')
+  div
+    input(type='submit', value='login')

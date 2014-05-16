@@ -1,4 +1,5 @@
-var db = require('./config/db');
+var connect = require('./config/db');
+var db = require('./config/user');
 
 module.exports = function(grunt) {
 
@@ -27,7 +28,7 @@ module.exports = function(grunt) {
     // convert adm string to bool
     adm = (adm === "true");
 
-    var user = new db.userModel({ name: usr, email: emailaddress, 
+    var user = new db({ name: usr, email: emailaddress, 
         salted_pass: pass, admin: adm });
     
     // save call is async, put grunt into async mode to work
@@ -38,7 +39,7 @@ module.exports = function(grunt) {
         console.log('Error: ' + err);
         done(false);
       } else {
-        console.log('saved user: ' + user.username);
+        console.log('saved user: ' + user.name);
         done();
       }
     });

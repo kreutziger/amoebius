@@ -10,15 +10,14 @@
     "qr-image": "*",
     "mongoose": "*",
     "bcrypt": "*",
-    "grunt": "*",
     "compression": "~1.0.2",
-    "morgan": "~1.0.1",
     "cookie-parser": "~1.1.0",
     "serve-static": "~1.1.0",
-    "express-session": "~1.1.0",
-    "method-override": "~1.0.0"
+    "express-session": "~1.1.0"
   },
   "devDependencies": {
+    "grunt": "*",
+    "morgan": "~1.0.1",
     "grunt-mocha-test": "~0.10.2"
   }
 }
