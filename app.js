@@ -19,6 +19,8 @@ var serve_static = require('serve-static');
 var express_session = require('express-session');
 var error_handler = require('errorhandler');
 
+var routes = require('./routes/index');
+
 var app = express();
 
 var ssl_options = {
@@ -51,7 +53,7 @@ app.use(express_session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(serve_static(__dirname + 'public'));
+app.use(serve_static(__dirname + '/public'));
 
 if ('development' === app.get('env')) {
     app.use(error_handler({
@@ -60,9 +62,7 @@ if ('development' === app.get('env')) {
     }));
 }
 
-app.get('/', function(req, res) {
-    res.send('hello world');
-});
+app.get('*', routes.index);
 
 var server = http.createServer(app).listen(8080);
 https.createServer(ssl_options, app).listen(8443);
