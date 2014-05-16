@@ -25,3 +25,6 @@ data/
 
 # ssl data
 ssl/
+
+# libraries
+public/js/lib/
