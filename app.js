@@ -45,7 +45,7 @@ app.use(cookie_parser());
 //app.use(method_override());
 app.use(express_session({
     name: 'doculink',
-    secret: 'asdasdasdasdasdasdasdasdasd'
+    secret: 'that-really-secret-key'
 }));
 
 app.use(passport.initialize());
