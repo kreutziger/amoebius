@@ -27,4 +27,4 @@ data/
 ssl/
 
 # libraries
-public/js/lib/
+public/js/lib

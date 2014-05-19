@@ -1,0 +1,8 @@
+.ui-accordion-header {
+    border: solid thin black;
+}
+
+.ui-accordion-content {
+    border: solid thin darkgreen;
+    overflow-y: scroll;
+}

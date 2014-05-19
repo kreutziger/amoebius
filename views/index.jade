@@ -13,6 +13,8 @@ html(ng-app="amoebius")
         p Hello 
           a(ui-sref='account') #{user.name}
         a(href='logout') Logout
+      if message
+        p #{message}
       h2 Welcome to amoebius
       <div ui-view></div>
     script(src='js/lib/jquery/jquery.js')

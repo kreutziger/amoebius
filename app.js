@@ -19,6 +19,7 @@ var serve_static = require('serve-static');
 var express_session = require('express-session');
 var error_handler = require('errorhandler');
 var body_parser = require('body-parser');
+var multipart = require('connect-multiparty');
 
 var routes = require('./routes/index');
 var user_routes = require('./routes/user');
@@ -46,6 +47,7 @@ app.use(compress({
     threshhold: 512
 }));
 app.use(body_parser());
+app.use(multipart());
 app.use(cookie_parser());
 app.use(express_session({
     name: 'doculink',
@@ -66,6 +68,8 @@ if ('development' === app.get('env')) {
 
 app.get('/', routes.index);
 app.get('/partials/:name', routes.partials);
+
+app.post('/api/create_doc', api.create_doc);
 
 app.get('/api/own_docs', api.docs);
 app.get('/api/other_docs', api.docs);

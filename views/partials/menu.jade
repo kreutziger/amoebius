@@ -38,5 +38,5 @@ div(id='accordion')
           a(ui-sref='sticker({id: doc._id})') Sticker
         li.download
           a(href="{{'/download/' + doc._id}}") Download
-    div(ng-if='own_message')
+    div(ng-if='other_message')
       h4 {{other_message}}

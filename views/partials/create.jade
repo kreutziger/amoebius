@@ -1,0 +1,15 @@
+include back
+h3 Create a new document
+form(action='/api/create_doc', method='post', enctype='multipart/form-data')
+  div
+    label(for='name') Name
+      input(id='name', type='text', value='', name='name', 
+        placeholder='Your document name...')
+  div
+    label(for='type') Type
+      input(id='type', type='text', value='', name='type', 
+        placeholder='Your document type...')
+  div
+    label(for='file') File
+      input(id='file', type='file', name='file')
+  input(type='submit', value='create document')

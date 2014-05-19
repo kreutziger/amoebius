@@ -24,7 +24,7 @@ doc_schema.path('from_user').validate(function(from_user) {
 }, 'invalid document creator');
 
 doc_schema.path('create_date').validate(function(create_date) {
-    return Date.now() > create_date || 0 > create_date;
+    return (Date.now() + 10) > create_date && 0 < create_date;
 }, 'invalid document create date');
 
 doc_schema.methods.update_path = function (new_path, callback) {

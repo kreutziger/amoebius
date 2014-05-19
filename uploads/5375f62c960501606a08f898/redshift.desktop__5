@@ -1,0 +1,2 @@
+[Redshift]
+Exec=redshift -l 48.754379:9.279213
