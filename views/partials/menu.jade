@@ -1,0 +1,42 @@
+a(ui-sref='create') Create new document
+script
+  $(function() {$('#accordion').accordion({animate: false});});
+div(id='accordion')
+  h3 Your Documents
+  div
+    div(ng-if='own_docs', ng-repeat='doc in own_docs')
+      h4 {{$index + 1}} {{doc.name}}
+      ul
+        li.look 
+          a(ui-sref='view({id: doc._id})') Look
+        li.edit 
+          a(ui-sref='edit({id: doc._id})') Edit
+        li.delete 
+          a(ui-sref='del({id: doc._id})') Delete
+        li.link 
+          a(ui-sref='link({id: doc._id})') Link
+        li.sticker 
+          a(ui-sref='sticker({id: doc._id})') Sticker
+        li.download
+          a(href="{{'/download/' + doc._id}}") Download
+    div(ng-if='own_message')
+      h4 {{own_message}}
+  h3 Other Documents
+  div
+    div(ng-if='other_docs', ng-repeat='doc in other_docs' )
+      h4 {{$index + 1}} {{doc.name}}
+      ul
+        li.look 
+          a(ui-sref='view({id: doc._id})') Look
+        li.edit 
+          a(ui-sref='edit({id: doc._id})') Edit
+        li.delete 
+          a(ui-sref='del({id: doc._id})') Delete
+        li.link 
+          a(ui-sref='link({id: doc._id})') Link
+        li.sticker 
+          a(ui-sref='sticker({id: doc._id})') Sticker
+        li.download
+          a(href="{{'/download/' + doc._id}}") Download
+    div(ng-if='own_message')
+      h4 {{other_message}}

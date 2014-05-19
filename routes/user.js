@@ -39,7 +39,7 @@ exports.post_login = function(req, res, next) {
 
 exports.logout = function(req, res, next) {
     if (req.user && req.user.username !== ""){
-        User.findOne({name: req.user.username}, function(err, user) {
+        User.findOne({name: req.user.name}, function(err, user) {
             if (err) {
                 next(err);
             } else {
