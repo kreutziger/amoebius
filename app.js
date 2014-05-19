@@ -2,8 +2,9 @@ var express = require('express');
 
 var qr = require('qr-image');
 
-var db = require('./config/db') ;
-var db = require('./config/passport');
+var db = require('./config/db');
+var pass = require('./config/passport');
+var api = require('./config/api');
 
 var https = require('https');
 var http = require('http');
@@ -65,6 +66,9 @@ if ('development' === app.get('env')) {
 
 app.get('/', routes.index);
 app.get('/partials/:name', routes.partials);
+
+app.get('/api/own_docs', api.docs);
+app.get('/api/other_docs', api.docs);
 
 app.get('/login', user_routes.get_login);
 app.post('/login', user_routes.post_login);

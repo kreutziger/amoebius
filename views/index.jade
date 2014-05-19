@@ -4,7 +4,7 @@ html(ng-app="amoebius")
     meta(charset="utf-8")
     base(href="/")
     title Welcome to the amoebius document management app
-    link(rel="stylesheet", href="/css/app.css")
+    link(rel="stylesheet", href="css/app.css")
   body
     div
       if !user
@@ -15,6 +15,8 @@ html(ng-app="amoebius")
         a(href='logout') Logout
       h2 Welcome to amoebius
       <div ui-view></div>
+    script(src='js/lib/jquery/jquery.js')
+    script(src='js/lib/jquery/jquery-ui.js')
     script(src='js/lib/angular/angular.js')
     script(src='js/lib/angular/angular-ui-router.js')
     script(src='js/app.js')
