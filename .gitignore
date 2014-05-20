@@ -28,3 +28,6 @@ ssl/
 
 # libraries
 public/js/lib
+
+# uploads
+uploads/

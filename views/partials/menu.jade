@@ -28,6 +28,8 @@ div(id='accordion')
       ul
         li.look 
           a(ui-sref='view({id: doc._id})') View 
+        li.delete 
+          a(ui-sref='del({id: doc._id})') Delete
         li.sticker 
           a(ui-sref='sticker({id: doc._id})') Sticker
         li.download

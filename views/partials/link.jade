@@ -1,7 +1,7 @@
 include back
 h3 Name: {{doc.name}}
 h3 Type: {{doc.type}}
-form(action='/api/link_doc', method='post')
+form(action="{{'/api/link_doc/' + doc._id}}", method='post')
   div
     label(for='user') User
       input(id='user', type='text', value='', name='user',
@@ -14,5 +14,4 @@ form(action='/api/link_doc', method='post')
     label(for='comment') Comment 
       input(id='comment', type='text', value='', name='comment',
         placeholder='Any thoughts?')
-  input(type='hidden', value='{{doc._id}}', id='id', name='id')
   input(type='submit', value='link document')

@@ -1,3 +1,8 @@
 include back
 h3 Name: {{doc.name}}
 h3 Type: {{doc.type}}
+h3 Linked users to this document:
+div(ng-if='linked_users', ng-repeat='user in linked_users')
+  h4 {{$index + 1}} {{user.name}}: {{user.email}}
+div(ng-if='linked_message')
+  h4 {{linked_message}}

@@ -119,7 +119,7 @@ exports.link_doc = function(req, res) {
                     // stuff
                 }
                 Links({from_user: req.session.passport.user, to_user: user.id,
-                      from_date: now, doc_id: req.body.id, 
+                      from_date: now, doc_id: req.params.id, 
                       to_date: date.unix() * 1000, comment: req.body.comment
                 }).save();
                 req.session.message = ['link successfully created'];
@@ -129,4 +129,35 @@ exports.link_doc = function(req, res) {
         });
     }
     res.redirect('/');
+};
+
+exports.edit_doc = function(req, res) {
+    res.redirect('/');
+};
+
+exports.linked_users = function(req, res) {
+    Links.find({doc_id: req.params.id, from_user: req.session.passport.user},
+               function(err, links) {
+        if (!err && links !== null && links.length > 0) {
+            var ids = links.map(function(link) {
+                return link.to_user;
+            });
+            Users.find({_id: {$in: ids}}, 'name email', function(err, users) {
+                if (err || users === null) {
+                    res.send({
+                        linked_message: 'No users linked to this document'
+                    });
+                } else {
+                    res.send({
+                        linked_users: users
+                    });
+                }
+            });
+        } else {
+            res.send({
+                linked_message: 'No users linked to this document'
+            });
+        }
+
+    });
 };
