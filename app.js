@@ -70,7 +70,9 @@ app.get('/', routes.index);
 app.get('/partials/:name', routes.partials);
 
 app.post('/api/create_doc', api.create_doc);
+app.post('/api/link_doc', api.link_doc);
 
+app.get('/api/doc/:id', api.doc);
 app.get('/api/own_docs', api.docs);
 app.get('/api/other_docs', api.docs);
 

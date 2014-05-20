@@ -6,6 +6,17 @@ function CreateCtrl($scope, $http) {
 
 }
 
+function LinkCtrl($scope, $http, $stateParams) {
+    $http.get('/api/doc/' + $stateParams.id).success(function(data) {
+        $scope.doc = data.doc;
+    });
+}
+
+function ViewCtrl($scope, $http, $stateParams) {
+    $http.get('/api/doc/' + $stateParams.id).success(function(data) {
+        $scope.doc = data.doc;
+    });
+}
 function MenuCtrl($scope, $http) {
     $http.get('/api/own_docs').success(function(data) {
         if (data.own_docs) {

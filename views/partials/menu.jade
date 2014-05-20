@@ -8,7 +8,7 @@ div(id='accordion')
       h4 {{$index + 1}} {{doc.name}}
       ul
         li.look 
-          a(ui-sref='view({id: doc._id})') Look
+          a(ui-sref='view({id: doc._id})') View 
         li.edit 
           a(ui-sref='edit({id: doc._id})') Edit
         li.delete 
@@ -27,13 +27,7 @@ div(id='accordion')
       h4 {{$index + 1}} {{doc.name}}
       ul
         li.look 
-          a(ui-sref='view({id: doc._id})') Look
-        li.edit 
-          a(ui-sref='edit({id: doc._id})') Edit
-        li.delete 
-          a(ui-sref='del({id: doc._id})') Delete
-        li.link 
-          a(ui-sref='link({id: doc._id})') Link
+          a(ui-sref='view({id: doc._id})') View 
         li.sticker 
           a(ui-sref='sticker({id: doc._id})') Sticker
         li.download
