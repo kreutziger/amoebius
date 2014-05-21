@@ -10,9 +10,18 @@
     "qr-image": "*",
     "mongoose": "*",
     "bcrypt": "*",
-    "grunt": "*"
+    "compression": "~1.0.2",
+    "cookie-parser": "~1.1.0",
+    "serve-static": "~1.1.0",
+    "express-session": "~1.1.0",
+    "connect-multiparty": "~1.0.3",
+    "body-parser": "~1.2.0",
+    "moment": "~2.6.0",
+    "q": "~1.0.1"
   },
   "devDependencies": {
+    "grunt": "*",
+    "morgan": "~1.0.1",
     "grunt-mocha-test": "~0.10.2"
   }
 }

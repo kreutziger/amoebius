@@ -6,7 +6,8 @@
         "*.swp",
         "*.swo",
         "*.jade",
-        "/data/*"
+        "/data/*",
+        "/public/*"
     ],
     "verbose": true,
     "execMap": {

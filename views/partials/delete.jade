@@ -1,0 +1,9 @@
+include back
+h3 Name: {{doc.name}}
+h3 Type: {{doc.type}}
+
+form(action="{{'/api/delete_doc/' + doc._id}}", method='post')
+  h4 Do you really want to delete this document?
+  label(for='delete') Delete this document?
+  input(type='checkbox', checked=false, id='delete', name='delete')
+  input(type='submit', value='do it')

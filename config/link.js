@@ -10,59 +10,51 @@ var link_schema = new Schema({
     comment: {type: String}
 });
 
-link_schema.methods.create_link = function(from_user, to_user, doc_id, 
-    from_date, to_date, comment, callback) {
-    var self = this;
-    // TODO check of input
-    if (from_user !== "" && to_user !== "" && doc_id !== "" && 
-        from_date !== "" && to_date !== "") {
-        return self.model({from_user: from_user, to_user: to_user,
-            doc_id: doc_id, from_date: from_date, to_date: to_date,
-            comment: comment}).save(callback);
-    }
-};
+link_schema.path('from_user').validate(function(from_user) {
+    return String(from_user).length > 0;
+}, 'invalid from_user');
+
+link_schema.path('to_user').validate(function(to_user) {
+    return String(to_user).length > 0;
+}, 'invalid to_user');
+
+link_schema.path('doc_id').validate(function(doc_id) {
+    return String(doc_id).length > 0;
+}, 'invalid doc_id');
+
+link_schema.path('from_date').validate(function(from_date) {
+    return (typeof from_date === 'number') && from_date > 0;
+}, 'invalid from_date');
+
+link_schema.path('to_date').validate(function(to_date) {
+    return (typeof to_date === 'number') && to_date > 0;
+}, 'invalid to_date');
 
 link_schema.methods.update_comment = function (new_comment, callback) {
     var self = this;
-    self.findById(self.id, function(err, link) {
-        if (err) {
-            return callback(err);
-        }
-        link.comment = new_comment;
-        link.save(callback);
-    });
+    self.comment = new_comment;
+    self.save(callback);
 };
 
 link_schema.methods.update_to_date = function (new_date, callback) {
     var self = this;
-    self.findById(self.id, function(err, link) {
-        if (err) {
-            return callback(err);
-        }
-
-        if (new_date !== "") {
-            link.to_date = new_date;
-        } else {
-            link.to_date = Date.now();
-        }
-        link.save(callback);
-    });
+    if (new_date !== "") {
+        self.to_date = new_date;
+    } else {
+        self.to_date = Date.now();
+    }
+    self.save(callback);
 };
 
 link_schema.methods.check_link = function (to_user, callback) {
     var self = this;
-    self.findById(self.id, function(err, link) {
-        if (err) {
-            return callback(err);
-        }
 
-        if (link.to_user === to_user && link.to_date < Date.now()) {
-            callback(null, true);
-        } else {
-            callback(null, false);
-        }
-    });
+    if (self.to_user === to_user && self.to_date < Date.now()) {
+        callback(null, true);
+    } else {
+        callback(null, false);
+    }
 };
 
 var link_model = mongoose.model('Link', link_schema);
-exports.doc_link = link_model;
+module.exports = link_model;

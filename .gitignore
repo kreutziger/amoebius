@@ -22,3 +22,12 @@ node_modules
 
 # mongo data files
 data/
+
+# ssl data
+ssl/
+
+# libraries
+public/js/lib
+
+# uploads
+uploads/
