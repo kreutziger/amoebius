@@ -12,10 +12,26 @@ function LinkCtrl($scope, $http, $stateParams) {
     });
 }
 
-function ViewCtrl($scope, $http, $stateParams) {
+function EditCtrl($scope, $http, $stateParams) {
     $http.get('/api/doc/' + $stateParams.id).success(function(data) {
         $scope.doc = data.doc;
     });
+}
+
+function ViewCtrl($scope, $http, $stateParams, $q) {
+    $scope.doc = $http.get('/api/doc/' + $stateParams.id, {cache: false});
+    $scope.users = $http.get('/api/linked_users/' + $stateParams.id, {cache: false});
+    $q.all([$scope.doc, $scope.users]).then(function(values) {
+        $scope.doc = values[0].data.doc;
+        if (values[1].data.linked_message) {
+            $scope.linked_message = values[1].data.linked_message;
+        } else {
+            $scope.linked_users = values[1].data.linked_users;
+        }
+    });
+//    $http.get('/api/doc/' + $stateParams.id).success(function(data) {
+//        $scope.doc = data.doc;
+//    });
 }
 function MenuCtrl($scope, $http) {
     $http.get('/api/own_docs').success(function(data) {

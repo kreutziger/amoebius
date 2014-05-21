@@ -12,6 +12,14 @@ angular.module('amoebius', ['ui.router']).
                 console.log('entered menu');
             }
         }).
+        state('edit', {
+            url: '/edit/:id',
+            templateUrl: 'partials/edit',
+            controller: 'EditCtrl',
+            onEnter: function() {
+                console.log('entered edit');
+            }
+        }).
         state('view', {
             url: '/view/:id',
             templateUrl: 'partials/view',

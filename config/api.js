@@ -7,7 +7,9 @@ var moment = require('moment');
 exports.create_doc = function(req, res) {
     //TODO input satinization
     if (req.user) {
-        if (req.files) {
+        if (req.files && req.files.file.originalFilename !== '') {
+            // TODO make own method of filesaving, deny '__' in filenames,
+            // error handling with io
             fs.readFile(req.files.file.path, function(err, data) {
                 var path = './uploads/' + req.user._id + '/';
                 fs.stat(path, function(err, stats) {
@@ -119,7 +121,7 @@ exports.link_doc = function(req, res) {
                     // stuff
                 }
                 Links({from_user: req.session.passport.user, to_user: user.id,
-                      from_date: now, doc_id: req.body.id, 
+                      from_date: now, doc_id: req.params.id, 
                       to_date: date.unix() * 1000, comment: req.body.comment
                 }).save();
                 req.session.message = ['link successfully created'];
@@ -129,4 +131,126 @@ exports.link_doc = function(req, res) {
         });
     }
     res.redirect('/');
+};
+
+exports.edit_doc = function(req, res) {
+    Docs.findById(req.params.id, function(err, doc) {
+        if (!err && doc !== null) {
+            if (req.body.name !== '') {
+                doc.name = req.body.name;
+            }
+            if (req.body.type !== '') {
+                    fs.unlink(doc.path, function(err) {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            console.log('>' + path);
+                        }
+                    });
+                doc.type = req.body.type; 
+            }
+            if (req.files && req.files.file.originalFilename !== '') {
+                fs.readFile(req.files.file.path, function(err, data) {
+                    fs.unlink(doc.path, function(err) {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            console.log('>' + doc.path);
+                        }
+                    });
+                    var path = './uploads/' + req.user._id + '/';
+                    fs.stat(path, function(err, stats) {
+                        if (err && err.code === 'ENOENT') {
+                            fs.mkdir('./uploads/' + req.user._id);
+                        }
+                    });
+                    path += req.files.file.originalFilename;
+                    var file_there = true;
+                    var stats, path_arr, file_num;
+                    while (file_there) {
+                        try {
+                            stats = fs.statSync(path);
+                            path_arr = path.split('__');
+                            if (path_arr.length === 1) {
+                                path = path + '__1';
+                            } else {
+                                file_num = path_arr.pop();
+                                file_num = String(parseInt(file_num, 10) + 1);
+                                path_arr.push(file_num);
+                                path = path_arr.join('__');
+                            }
+                        } catch (error) {
+                            file_there = false; 
+                        }
+                    }
+                    fs.writeFile(path, data, function(err) {
+                        if (err) {                      
+                            console.log(err);
+                        } else {
+                            doc.path = path;
+                            doc.save(function(err, doc, count) {
+                                if (!err && count !== 0) {
+                                    console.log('updated doc "' + doc.name +
+                                                '" ' + doc._id);
+                                } else {
+                                    console.log(err, doc, count);
+                                }
+                            });
+                            req.session.message = ['document is updated'];
+                            res.redirect('/');
+                        }
+                    });
+                });
+            } else {
+                doc.save(function(err, doc, count) {
+                    if (!err && count !== 0) {
+                        console.log('updated doc "' + doc.name + '" ' + doc._id);
+                    } else {
+                        console.log(err, doc, count);
+                    }
+                });
+                req.session.message = ['document is updated'];
+                res.redirect('/');
+            }
+        }    
+    });
+};
+
+exports.linked_users = function(req, res) {
+    Links.find({doc_id: req.params.id, from_user: req.session.passport.user},
+               function(err, links) {
+        if (!err && links !== null && links.length > 0) {
+            var ids = links.map(function(link) {
+                return link.to_user;
+            });
+            Users.find({_id: {$in: ids}}, 'name email', function(err, users) {
+                if (err || users === null) {
+                    res.send({
+                        linked_message: 'No users linked to this document'
+                    });
+                } else {
+                    res.send({
+                        linked_users: users
+                    });
+                }
+            });
+        } else {
+            res.send({
+                linked_message: 'No users linked to this document'
+            });
+        }
+
+    });
+};
+
+exports.download = function(req, res) {
+    // TODO user check
+    Docs.findById(req.params.id, function(err, doc) {
+        if (!err && doc !== null) {
+            var filename = doc.path.split('/');
+            res.download(doc.path, filename.pop().split('__')[0]);
+        } else {
+            res.send(403);
+        }
+    });   
 };
