@@ -77,6 +77,7 @@ app.get('/api/linked_users/:id', api.linked_users);
 app.get('/api/doc/:id', api.doc);
 app.get('/api/own_docs', api.docs);
 app.get('/api/other_docs', api.docs);
+app.get('/download/:id', api.download);
 
 app.get('/login', user_routes.get_login);
 app.post('/login', user_routes.post_login);
