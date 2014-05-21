@@ -12,6 +12,22 @@ angular.module('amoebius', ['ui.router']).
                 console.log('entered menu');
             }
         }).
+        state('delete', {
+            url: '/delete/:id',
+            templateUrl: 'partials/delete',
+            controller: 'DeleteCtrl',
+            onEnter: function() {
+                console.log('entered delete');
+            }
+        }).
+        state('sticker', {
+            url: '/sticker/:id',
+            templateUrl: 'partials/sticker',
+            controller: 'StickerCtrl',
+            onEnter: function() {
+                console.log('entered sticker');
+            }
+        }).
         state('edit', {
             url: '/edit/:id',
             templateUrl: 'partials/edit',

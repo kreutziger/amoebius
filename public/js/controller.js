@@ -6,6 +6,16 @@ function CreateCtrl($scope, $http) {
 
 }
 
+function StickerCtrl($scope, $stateParams) {
+    $scope.id = $stateParams.id;
+}
+
+function DeleteCtrl($scope, $http, $stateParams) {
+    $http.get('/api/doc/' + $stateParams.id).success(function(data) {
+        $scope.doc = data.doc;
+    });
+}
+
 function LinkCtrl($scope, $http, $stateParams) {
     $http.get('/api/doc/' + $stateParams.id).success(function(data) {
         $scope.doc = data.doc;

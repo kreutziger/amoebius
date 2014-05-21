@@ -72,12 +72,18 @@ app.get('/partials/:name', routes.partials);
 app.post('/api/create_doc', api.create_doc);
 app.post('/api/edit_doc/:id', api.edit_doc);
 app.post('/api/link_doc/:id', api.link_doc);
+app.post('/api/delete_doc/:id', api.delete_doc);
 
 app.get('/api/linked_users/:id', api.linked_users);
 app.get('/api/doc/:id', api.doc);
 app.get('/api/own_docs', api.docs);
 app.get('/api/other_docs', api.docs);
 app.get('/download/:id', api.download);
+app.get('/api/sticker/:id', function(req, res) {
+    var code = qr.image(req.params.id, {type: 'png'});
+    res.type('png');
+    code.pipe(res);
+});
 
 app.get('/login', user_routes.get_login);
 app.post('/login', user_routes.post_login);

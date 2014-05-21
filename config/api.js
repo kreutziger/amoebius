@@ -254,3 +254,29 @@ exports.download = function(req, res) {
         }
     });   
 };
+
+exports.delete_doc = function(req, res) {
+    if (req.body.delete && req.body.delete === 'on') {
+        Docs.findById(req.params.id, function (err, doc) {
+            if (!err && doc !== null && doc.from_user === req.session.passport.user) {
+                if (doc.path !== '') {
+                    Docs.remove({_id: req.params.id}).exec();
+                    Links.remove({doc_id: req.params.id}).exec();
+                    fs.unlink(doc.path, function(err) {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            console.log('>' + doc.path);
+                        }
+                    });
+                    req.session.message = 'document removed';
+                }
+            } else {
+                req.session.message = 'error removing document';
+            }
+            res.redirect('/');
+        });
+    } else {
+        res.redirect('/');
+    }
+};
