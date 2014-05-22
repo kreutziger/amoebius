@@ -6,6 +6,20 @@ function CreateCtrl($scope, $http) {
 
 }
 
+function AccountCtrl($scope, $http) {
+
+}
+
+function AdminCtrl($scope, $http) {
+    $http.get('/account/get_users').success(function(data) {
+        if (data.users) {
+            $scope.users = data.users;
+        } else {
+            $scope.message = data.message;
+        }
+    });
+}
+
 function StickerCtrl($scope, $stateParams) {
     $scope.id = $stateParams.id;
 }

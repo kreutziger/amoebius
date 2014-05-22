@@ -8,7 +8,7 @@ var doc_schema = new Schema({
     create_date: {type: Number},
     comment: {type: String},
     path: {type: String},
-    from_user: {type: String, required: true}
+    from_user: {type: Schema.ObjectId, required: true}
 });
 
 doc_schema.path('name').validate(function(name) {
@@ -20,7 +20,7 @@ doc_schema.path('type').validate(function(type) {
 }, 'invalid document type');
 
 doc_schema.path('from_user').validate(function(from_user) {
-    return from_user.length > 0;
+    return String(from_user).length > 0;
 }, 'invalid document creator');
 
 doc_schema.path('create_date').validate(function(create_date) {

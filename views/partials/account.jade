@@ -1,0 +1,19 @@
+include back
+if user
+  h3 Hello #{user.name}
+  form(action='/account/update_user', method='post')
+    div
+      label(for='email') E-Mail
+      input(type='text', value='', id='email', name='email',
+      placeholder='#{user.email}')
+    div
+      label(for='password') Password
+      input(type='password', value='', id='password', name='password')
+    div
+      label(for='password2') Verification
+      input(type='password', value='', id='password2', name='password2')
+    div
+      label(for='authenticate') Authenticate with password
+      input(type='password', value='', id='authenticate', name='authenticate')
+    div
+      input(type='submit', value='update')

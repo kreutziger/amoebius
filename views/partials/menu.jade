@@ -21,7 +21,7 @@ div(id='accordion')
           a(href="{{'/download/' + doc._id}}") Download
     div(ng-if='own_message')
       h4 {{own_message}}
-  h3 Other Documents
+  h3 Linked Documents
   div
     div(ng-if='other_docs', ng-repeat='doc in other_docs' )
       h4 {{$index + 1}} {{doc.name}}

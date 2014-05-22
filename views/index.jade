@@ -12,7 +12,9 @@ html(ng-app="amoebius")
       if user
         p Hello 
           a(ui-sref='account') #{user.name}
-        a(href='logout') Logout
+          if user.admin
+            a(ui-sref='admin') (admin-menu)
+          a(href='logout') Logout
       if message
         p= message
       h2 Welcome to amoebius

@@ -1,0 +1,34 @@
+include back
+if user && user.admin
+  h3 create user
+    form(action='/account/create_user', method='post')
+      div
+        label(for='name') Name
+        input(type='text', value='', name='name', id='name',
+        placeholder='User name...')
+      div
+        label(for='email') E-Mail
+        input(type='text', value='', name='email', id='email',
+        placeholder='User e-mail address...')
+      div
+        label(for='password') Password
+        input(type='password', value='', name='password', id='password',
+        placeholder='Password')
+      div
+        label(for='password2') Verification 
+        input(type='password', value='', name='password2', id='password2',
+        placeholder='Verification')
+      div
+        label(for=admin) Admin
+        input(type='checkbox', checked=false, name='admin', id='admin')
+      input(type='submit', value='create user')
+  h3 delete or modify user
+    div(ng-if='users')
+      form(action='/account/delete_user', method='post')
+        div(ng-repeat='user in users')
+          h4 {{$index + 1}} {{user.name}} {{user.email}} admin: {{user.admin}}
+          input(type='checkbox', checked=false, id='{{user._id}}',
+          name='{{user._id}}')
+        input(type='submit', value='delete user(s)')
+    div(ng-if='message')
+        h4 {{message}}

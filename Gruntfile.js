@@ -1,5 +1,6 @@
 var connect = require('./config/db');
 var db = require('./config/user');
+var mongoose = require('mongoose');
 
 module.exports = function(grunt) {
 
@@ -18,9 +19,17 @@ module.exports = function(grunt) {
         }
     });
 
+  grunt.registerTask('resetapp', 'reset db and upload folder and create ' + 
+                     'new users', function() {
+    grunt.task.run('dbdrop');
+    grunt.task.run('rmupload');
+    grunt.task.run('dbseed');
+  });
+
   grunt.registerTask('dbseed', 'seed the database', function() {
     grunt.task.run('adduser:admin:admin@example.com:secret:true');
     grunt.task.run('adduser:bob:bob@example.com:secret:false');
+    grunt.task.run('adduser:bob2:bob2@example.com:secret:false');
   });
 
   grunt.registerTask('adduser', 'add a user to the database', function(usr, 
@@ -49,8 +58,8 @@ module.exports = function(grunt) {
         // async mode
         var done = this.async();
 
-        db.mongoose.connection.on('open', function() {
-            db.mongoose.connection.db.dropDatabase(function(err) {
+        mongoose.connection.on('open', function() {
+            mongoose.connection.db.dropDatabase(function(err) {
                 if (err) {
                     console.log('Error: ' + err);
                     done(false);
@@ -62,5 +71,19 @@ module.exports = function(grunt) {
         });
     });
 
+    grunt.registerTask('rmupload', 'remove uploads', function() {
+        var done = this.async();
+        var exec = require('child_process').exec,
+        child;
+        child = exec('rm -rf uploads/*', function(err, stdout, stderr) {
+            console.log('stdout: ', stdout);
+            console.log('sdterr: ', stderr);
+            if (err !== null) {
+                console.log('err: ', err);
+                done(false);
+            }               
+            done();
+        });
+    });
 //    grunt.registerTask('default', 'mochaTest');
 };

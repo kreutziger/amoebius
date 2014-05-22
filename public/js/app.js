@@ -12,12 +12,28 @@ angular.module('amoebius', ['ui.router']).
                 console.log('entered menu');
             }
         }).
+        state('admin', {
+            url: '/admin',
+            templateUrl: 'partials/admin',
+            controller: 'AdminCtrl',
+            onEnter: function() {
+                console.log('entered admin');
+            }
+        }).
         state('delete', {
             url: '/delete/:id',
             templateUrl: 'partials/delete',
             controller: 'DeleteCtrl',
             onEnter: function() {
                 console.log('entered delete');
+            }
+        }).
+        state('account', {
+            url: '/account/:id',
+            templateUrl: 'partials/account',
+            controller: 'AccountCtrl',
+            onEnter: function() {
+                console.log('entered account');
             }
         }).
         state('sticker', {
