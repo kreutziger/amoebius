@@ -18,11 +18,10 @@ exports.update_user = function(req, res) {
                         user.save(function(err, user, rows) {
                             if (!err && user !== null &&  rows === 1) {
                                 req.session.messages = ['user updated'];
-                                res.redirect('/');
                             } else {
                                 req.session.messages = ['error: db error'];
-                                res.redirect('/');
                             }
+                            res.redirect('/');
                         });
                     } else {
                         req.session.messages = ['error: wrong password'];
@@ -34,7 +33,10 @@ exports.update_user = function(req, res) {
                 res.redirect('/');
             }
         });
-    } 
+    } else {
+        req.session.messages = ['no password given'];
+        res.redirect('/');
+    }
 };
 
 exports.create_user = function create_user(req, res) {
@@ -43,7 +45,7 @@ exports.create_user = function create_user(req, res) {
             req.body.password === req.body.password2) {
             Users.findOne({name: req.body.name}, function(err, user) {
                 if (!err && user === null) {
-                    new_user = new Users();
+                    var new_user = new Users();
                     new_user.name = req.body.name;
                     new_user.email = req.body.email;
                     new_user.salted_pass = req.body.password;
@@ -61,7 +63,7 @@ exports.create_user = function create_user(req, res) {
                 }
             });
         } else {
-            req.session.messages = ['user password verification failed']
+            req.session.messages = ['user password verification failed'];
             res.redirect('/');
         }
     } else {
@@ -99,7 +101,7 @@ exports.delete_user = function delete_user(req, res) {
     });
 };
 
-exports.get_users = function get_users(req, res) {
+exports.users = function users(req, res) {
     Users.find({_id: {$ne: req.session.passport.user}}, 'name email _id admin',
                 function(err, users) {
         if (!err &&  users !== null) {
@@ -112,4 +114,57 @@ exports.get_users = function get_users(req, res) {
             });
         }
     });
+};
+
+exports.user = function user(req, res) {
+    Users.findById(req.params.id, 'name email _id admin',
+                function(err, user) {
+        if (!err &&  user !== null) {
+            res.send({
+                user: user
+            });
+        } else {
+            res.send({
+                message: 'No user available'
+            });
+        }
+    });
+};
+
+exports.modify_user = function modify_user(req, res) {
+    if (req.params.id !== req.session.passport.user) {
+        Users.findById(req.params.id, function(err, user) {
+            if (!err && user !== null) {
+                if (req.body.name && req.body.name !== '') {
+                    user.name = req.body.name;
+                }
+                if (req.body.email && req.body.email !== '') {
+                    user.email = req.body.email;
+                }
+                if (req.body.password && req.body.password2 &&
+                   req.body.password === req.body.password2 &&
+                   req.body.password !== '') {
+                    user.salted_pass = req.body.password;
+                }
+                if (req.body.admin && req.body.admin === 'on') {
+                    user.admin = true;
+                } else {
+                    user.admin = false;
+                }
+                user.save(function(err, user, rows) {
+                    if (!err && user !== null && rows === 1) {
+                        req.session.messages = ['user modified'];                        
+                    } else {
+                        req.session.messages = ['no changes done'];
+                    }                       
+                    res.redirect('/');
+                });
+            } else {
+                req.session.messages = ['user not found'];
+                res.redirect('/');
+            }
+        });
+    } else {
+        res.redirect('/');
+    }
 };

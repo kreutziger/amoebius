@@ -26,7 +26,10 @@ if user && user.admin
     div(ng-if='users')
       form(action='/account/delete_user', method='post')
         div(ng-repeat='user in users')
-          h4 {{$index + 1}} {{user.name}} {{user.email}} admin: {{user.admin}}
+          h4
+            {{$index + 1}} 
+            a(ui-sref='modify({id: user._id})') {{user.name}}
+            {{user.email}} admin: {{user.admin}}
           input(type='checkbox', checked=false, id='{{user._id}}',
           name='{{user._id}}')
         input(type='submit', value='delete user(s)')

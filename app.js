@@ -69,7 +69,7 @@ if ('development' === app.get('env')) {
 
 //general routing
 app.get('/', routes.index);
-app.get('/partials/:name', routes.partials);
+app.get('/partials/:name', pass.ensure_auth, routes.partials);
 
 //post document stuff
 app.post('/api/create_doc', pass.ensure_auth, api.create_doc);
@@ -78,6 +78,7 @@ app.post('/api/link_doc/:id', pass.ensure_auth, api.link_doc);
 app.post('/api/delete_doc/:id', pass.ensure_auth, api.delete_doc);
 
 //post account stuff
+app.post('/account/modify_user/:id', pass.ensure_auth, account.modify_user);
 app.post('/account/update_user', pass.ensure_auth, account.update_user);
 app.post('/account/create_user', pass.ensure_auth, pass.ensure_admin,
          account.create_user);
@@ -87,8 +88,10 @@ app.post('/account/delete_user', pass.ensure_auth, pass.ensure_admin,
 //get account stuff
 app.get('/admin', pass.ensure_auth, pass.ensure_admin, user_routes.admin);
 app.get('/account', pass.ensure_auth, user_routes.account);
-app.get('/account/get_users', pass.ensure_auth, pass.ensure_admin,
-         account.get_users);
+app.get('/account/users', pass.ensure_auth, pass.ensure_admin,
+         account.users);
+app.get('/account/user/:id', pass.ensure_auth, pass.ensure_admin,
+         account.user);
 
 //get document stuff
 app.get('/api/linked_users/:id', pass.ensure_auth, api.linked_users);

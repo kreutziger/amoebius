@@ -10,8 +10,18 @@ function AccountCtrl($scope, $http) {
 
 }
 
+function ModifyCtrl($scope, $http, $stateParams) {
+    $http.get('/account/user/' + $stateParams.id).success(function(data) {
+        if (data.user) {
+            $scope.user = data.user;
+        } else {
+            $scope.message = data.message;
+        }
+    });
+}
+
 function AdminCtrl($scope, $http) {
-    $http.get('/account/get_users').success(function(data) {
+    $http.get('/account/users').success(function(data) {
         if (data.users) {
             $scope.users = data.users;
         } else {

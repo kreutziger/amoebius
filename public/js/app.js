@@ -20,6 +20,14 @@ angular.module('amoebius', ['ui.router']).
                 console.log('entered admin');
             }
         }).
+        state('modify', {
+            url: '/modify/:id',
+            templateUrl: 'partials/modify',
+            controller: 'ModifyCtrl',
+            onEnter: function() {
+                console.log('entered modify');
+            }
+        }).
         state('delete', {
             url: '/delete/:id',
             templateUrl: 'partials/delete',
