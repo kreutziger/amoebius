@@ -44,8 +44,7 @@ exports.ensure_auth = function ensure_auth(req, res, next) {
 
 exports.ensure_admin = function ensure_admin(req, res, next) {
     if (req.user && req.user.admin === true) {
-        next();
-    } else {
-        res.send(403);
+        return next();
     }
+    res.send(403);
 };

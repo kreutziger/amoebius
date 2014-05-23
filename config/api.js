@@ -12,38 +12,38 @@ exports.create_doc = function(req, res) {
             // error handling with io
             fs.readFile(req.files.file.path, function(err, data) {
                 var path = './uploads/' + req.user._id + '/';
-                fs.stat(path, function(err, stats) {
+                fs.stat(path, function(err, status) {
                     if (err && err.code === 'ENOENT') {
                         fs.mkdir('./uploads/' + req.user._id);
                     }
-                });
-                path += req.files.file.originalFilename;
-                var file_there = true;
-                var stats, path_arr, file_num;
-                while (file_there) {
-                    try {
-                        stats = fs.statSync(path);
-                        path_arr = path.split('__');
-                        if (path_arr.length === 1) {
-                            path = path + '__1';
-                        } else {
-                            file_num = path_arr.pop();
-                            file_num = String(parseInt(file_num, 10) + 1);
-                            path_arr.push(file_num);
-                            path = path_arr.join('__');
+                    path += req.files.file.originalFilename;
+                    var file_there = true;
+                    var stats, path_arr, file_num;
+                    while (file_there) {
+                        try {
+                            stats = fs.statSync(path);
+                            path_arr = path.split('__');
+                            if (path_arr.length === 1) {
+                                path = path + '__1';
+                            } else {
+                                file_num = path_arr.pop();
+                                file_num = String(parseInt(file_num, 10) + 1);
+                                path_arr.push(file_num);
+                                path = path_arr.join('__');
+                            }
+                        } catch (error) {
+                            file_there = false; 
                         }
-                    } catch (error) {
-                        file_there = false; 
                     }
-                }
-                fs.writeFile(path, data, function(err) {
-                    if (err) {                      
-                        console.log(err);
-                    }
+                    fs.writeFile(path, data, function(err) {
+                        if (err) {                      
+                            console.log(err);
+                        }
+                    });
+                    Docs({name: req.body.name, type: req.body.type,
+                    from_user: req.user._id, create_date: Date.now(),
+                    comment: req.body.comment, path: path}).save();
                 });
-                Docs({name: req.body.name, type: req.body.type,
-                from_user: req.user._id, create_date: Date.now(),
-                comment: req.body.comment, path: path}).save();
             });
         } else { 
             Docs({name: req.body.name, type: req.body.type,
@@ -124,11 +124,13 @@ exports.link_doc = function(req, res) {
                       from_date: now, doc_id: req.params.id, 
                       to_date: date.unix() * 1000, comment: req.body.comment
                 }).save();
-                req.session.message = ['link successfully created'];
+                req.session.messages = ['link successfully created'];
             } else {
-                req.session.message = ['link could not be created'];
+                req.session.messages = ['link could not be created'];
             }
         });
+    } else {
+        req.session.messages = ['user not found'];
     }
     res.redirect('/');
 };
@@ -196,7 +198,7 @@ exports.edit_doc = function(req, res) {
                                     console.log(err, doc, count);
                                 }
                             });
-                            req.session.message = ['document is updated'];
+                            req.session.messages = ['document is updated'];
                             res.redirect('/');
                         }
                     });
@@ -209,7 +211,7 @@ exports.edit_doc = function(req, res) {
                         console.log(err, doc, count);
                     }
                 });
-                req.session.message = ['document is updated'];
+                req.session.messages = ['document is updated'];
                 res.redirect('/');
             }
         }    
@@ -244,13 +246,30 @@ exports.linked_users = function(req, res) {
 };
 
 exports.download = function(req, res) {
-    // TODO user check
-    Docs.findById(req.params.id, function(err, doc) {
-        if (!err && doc !== null) {
+    Docs.find({_id: req.params.id, from_user: req.session.passport.user},
+              function(err, doc) {
+        if (!err && doc !== null && doc.path !== undefined) {
             var filename = doc.path.split('/');
             res.download(doc.path, filename.pop().split('__')[0]);
         } else {
-            res.send(403);
+            Links.find({to_user:req.session.passport.user,
+                       doc_id: req.params.id}, function(err, link) {
+                if (!err && link !== null) {
+                    Docs.findById(req.params.id, function(err, doc) {
+                        if (!err && doc !== null && doc.path !== undefined) {
+                            var filename = doc.path.split('/');
+                            res.download(doc.path, filename.pop().
+                                         split('__')[0]);
+                        } else {
+                            req.session.messages = ['no document found'];
+                            res.redirect('/');
+                        }
+                    });
+                } else {
+                    req.session.messages = ['no document found'];
+                    res.redirect('/');
+                }
+            });
         }
     });   
 };
@@ -258,10 +277,11 @@ exports.download = function(req, res) {
 exports.delete_doc = function(req, res) {
     if (req.body.delete && req.body.delete === 'on') {
         Docs.findById(req.params.id, function (err, doc) {
-            if (!err && doc !== null && doc.from_user === req.session.passport.user) {
+            if (!err && doc !== null &&
+                String(doc.from_user) === req.session.passport.user) {
+                Docs.remove({_id: req.params.id}).exec();
+                Links.remove({doc_id: req.params.id}).exec();
                 if (doc.path !== '') {
-                    Docs.remove({_id: req.params.id}).exec();
-                    Links.remove({doc_id: req.params.id}).exec();
                     fs.unlink(doc.path, function(err) {
                         if (err) {
                             console.log(err);
@@ -269,14 +289,34 @@ exports.delete_doc = function(req, res) {
                             console.log('>' + doc.path);
                         }
                     });
-                    req.session.message = 'document removed';
                 }
+                req.session.messages = 'document removed';
             } else {
-                req.session.message = 'error removing document';
+                req.session.messages = 'error removing document';
             }
             res.redirect('/');
         });
     } else {
         res.redirect('/');
     }
+};
+
+exports.unlink = function unlink(req, res) {
+    var ids = [];
+    var property;
+    for (property in req.body) {
+        if (req.body.hasOwnProperty(property)) {
+            ids.push(property);
+        }
+    }
+
+    Links.remove({to_user: {$in: ids}, doc_id: req.params.id,
+               from_user: req.session.passport.user}, function(err, links) {
+        if (!err && links > 0) {
+            req.session.messages = ['links removed'];           
+        } else {
+            req.session.messages = ['no links found'];
+        }
+        res.redirect('/');
+    });
 };

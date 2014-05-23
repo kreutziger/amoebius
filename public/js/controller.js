@@ -6,6 +6,30 @@ function CreateCtrl($scope, $http) {
 
 }
 
+function AccountCtrl($scope, $http) {
+
+}
+
+function ModifyCtrl($scope, $http, $stateParams) {
+    $http.get('/account/user/' + $stateParams.id).success(function(data) {
+        if (data.user) {
+            $scope.user = data.user;
+        } else {
+            $scope.message = data.message;
+        }
+    });
+}
+
+function AdminCtrl($scope, $http) {
+    $http.get('/account/users').success(function(data) {
+        if (data.users) {
+            $scope.users = data.users;
+        } else {
+            $scope.message = data.message;
+        }
+    });
+}
+
 function StickerCtrl($scope, $stateParams) {
     $scope.id = $stateParams.id;
 }
