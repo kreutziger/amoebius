@@ -4,19 +4,21 @@ html(ng-app="amoebius")
     meta(charset="utf-8")
     base(href="/")
     title Welcome to the amoebius document management app
-    link(rel="stylesheet", href="css/app.css")
+    link(rel="stylesheet", href="css/style.css")
   body
-    div
-      if !user
-        a(ui-sref='login') Login
-      if user
-        p Hello 
-          a(ui-sref='account') #{user.name}
-          if user.admin
-            a(ui-sref='admin') (admin-menu)
-          a(href='logout') Logout
+    div.main-content
+      div.greetingbox
+        div.greeting
+          if !user
+            a(ui-sref='login') Login
+          if user
+            label(for='name') Hello 
+            a(ui-sref='account') #{user.name}
+            if user.admin
+              a(ui-sref='admin') (admin-menu)
+            a(href='logout') Logout
       if message
-        p= message
+        p.msg= message
       h2 Welcome to amoebius
       <div ui-view></div>
     script(src='js/lib/jquery/jquery.js')

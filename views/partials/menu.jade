@@ -4,7 +4,7 @@ script
 div(id='accordion')
   h3 Your Documents
   div
-    div(ng-if='own_docs', ng-repeat='doc in own_docs')
+    div(ng-if='own_docs', ng-repeat='doc in own_docs').clear.repeat-element
       h4 {{$index + 1}} {{doc.name}}
       ul
         li.look 
@@ -23,13 +23,13 @@ div(id='accordion')
       h4 {{own_message}}
   h3 Linked Documents
   div
-    div(ng-if='other_docs', ng-repeat='doc in other_docs' )
+    div(ng-if='other_docs', ng-repeat='doc in other_docs').clear.repeat-element
       h4 {{$index + 1}} {{doc.name}}
       ul
         li.look 
           a(ui-sref='view({id: doc._id})') View 
         li.delete 
-          a(ui-sref='del({id: doc._id})') Delete
+          a(ui-sref='delete_link({id: doc._id})') Delete
         li.sticker 
           a(ui-sref='sticker({id: doc._id})') Sticker
         li.download

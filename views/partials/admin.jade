@@ -1,6 +1,7 @@
 include back
 if user && user.admin
-  h3 create user
+  div
+    h3 create user
     form(action='/account/create_user', method='post')
       div
         label(for='name') Name
@@ -20,14 +21,15 @@ if user && user.admin
         placeholder='Verification')
       div
         label(for=admin) Admin
-        input(type='checkbox', checked=false, name='admin', id='admin')
-      input(type='submit', value='create user')
-  h3 delete or modify user
+        input(type='checkbox', checked=false, name='admin', id='admin').admin
+      div
+        input(type='submit', value='create user')
+  div.clear
+    h3 delete or modify user
     div(ng-if='users')
       form(action='/account/delete_user', method='post')
-        div(ng-repeat='user in users')
-          h4
-            {{$index + 1}} 
+        div(ng-repeat='user in users').repeat-element-admin
+          h4.float-left {{$index + 1}} 
             a(ui-sref='modify({id: user._id})') {{user.name}}
             {{user.email}} admin: {{user.admin}}
           input(type='checkbox', checked=false, id='{{user._id}}',

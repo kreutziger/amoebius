@@ -1,6 +1,7 @@
 var express = require('express');
 
 var qr = require('qr-image');
+var stylus = require('stylus');
 
 var db = require('./config/db');
 var pass = require('./config/passport');
@@ -54,6 +55,11 @@ app.use(express_session({
     name: 'doculink',
     secret: 'that-really-secret-key'
 }));
+app.use(stylus.middleware({src: __dirname + '/views',
+                          dest: __dirname + '/public',
+                          debug: true
+                         })
+       );
 
 app.use(passport.initialize());
 app.use(passport.session());

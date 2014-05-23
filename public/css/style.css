@@ -1,0 +1,149 @@
+@font-face {
+  font-family: Vollkorn;
+  font-style: normal;
+  src: url("../fonts/Vollkorn-Regular.ttf");
+}
+.main-content {
+  width: 400px;
+  float: left;
+}
+.msg {
+  background: #ff0;
+  text-align: center;
+  width: 200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.greetingbox {
+  border: thin solid #610e0e;
+  width: 400px;
+  height: 25px;
+}
+.greeting {
+  padding-top: 5px;
+  font-size: 12px;
+  width: 260px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.ui-accordion {
+  background-color: #fff;
+}
+.ui-accordion-content,
+.ui-accordion-header {
+  background-color: #d9d9d9;
+}
+.ui-accordion-header {
+  margin-top: 5px;
+  border: solid thin #610e0e;
+}
+.ui-accordion-content {
+  border: solid thin #006400;
+  overflow-y: scroll;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+.clear {
+  padding-top: 5px;
+  clear: both;
+}
+.float-left {
+  float: left;
+}
+.repeat-element-admin,
+.repeat-element {
+  border-bottom: thin solid #006400;
+  border-radius: 0px;
+  height: 85px;
+  width: 370px;
+  padding-bottom: 5px;
+  padding-top: 0px;
+}
+.repeat-element-admin {
+  height: 32px;
+}
+.repeat-element:last-child {
+  border-bottom: none;
+}
+.greeting > a label {
+  float: left;
+}
+.greeting > label {
+  width: 50px;
+  padding-top: 0px;
+}
+.greeting > a {
+  height: 20px;
+  margin-right: 6px;
+  background-color: #71c94c;
+}
+form {
+  width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+}
+input {
+  float: right;
+  width: 180px;
+}
+.admin {
+  margin-right: 90px !important;
+  margin-left: 0px;
+}
+input[type=checkbox] {
+  width: 20px;
+  margin-left: auto;
+  margin-right: auto;
+}
+label {
+  font-size: 14px;
+  text-align: right;
+  width: 102px;
+  float: left;
+  padding-top: 6px;
+}
+label,
+input {
+  height: 20px;
+}
+label,
+a {
+  padding-right: 5px;
+color
+}
+ul {
+  list-style: none;
+}
+li {
+  border: thin solid #000;
+  text-align: center;
+  display: block;
+  width: 88px;
+  float: left;
+  background-color: #71c94c;
+  margin: 2px;
+}
+li > a {
+  text-decoration: none;
+  padding: 2px;
+}
+h4,
+h3 {
+  margin-top: 10px;
+  padding-left: 5px;
+}
+h2,
+h3 {
+  text-align: center;
+}
+h4 {
+  font-size: 12px;
+}
+body {
+  color: #525252;
+  background-color: #fff;
+}
+* {
+  font-family: Vollkorn;
+  border-radius: 5px;
+}
