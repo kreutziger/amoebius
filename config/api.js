@@ -252,8 +252,24 @@ exports.download = function(req, res) {
             var filename = doc.path.split('/');
             res.download(doc.path, filename.pop().split('__')[0]);
         } else {
-            req.session.messages = ['no document found'];
-            res.redirect('/');
+            Links.find({to_user:req.session.passport.user,
+                       doc_id: req.params.id}, function(err, link) {
+                if (!err && link !== null) {
+                    Docs.findById(req.params.id, function(err, doc) {
+                        if (!err && doc !== null && doc.path !== undefined) {
+                            var filename = doc.path.split('/');
+                            res.download(doc.path, filename.pop().
+                                         split('__')[0]);
+                        } else {
+                            req.session.messages = ['no document found'];
+                            res.redirect('/');
+                        }
+                    });
+                } else {
+                    req.session.messages = ['no document found'];
+                    res.redirect('/');
+                }
+            });
         }
     });   
 };
@@ -283,4 +299,24 @@ exports.delete_doc = function(req, res) {
     } else {
         res.redirect('/');
     }
+};
+
+exports.unlink = function unlink(req, res) {
+    var ids = [];
+    var property;
+    for (property in req.body) {
+        if (req.body.hasOwnProperty(property)) {
+            ids.push(property);
+        }
+    }
+
+    Links.remove({to_user: {$in: ids}, doc_id: req.params.id,
+               from_user: req.session.passport.user}, function(err, links) {
+        if (!err && links > 0) {
+            req.session.messages = ['links removed'];           
+        } else {
+            req.session.messages = ['no links found'];
+        }
+        res.redirect('/');
+    });
 };

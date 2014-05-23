@@ -29,5 +29,8 @@ ssl/
 # libraries
 public/js/lib
 
+# generated css files
+public/css/
+
 # uploads
 uploads/

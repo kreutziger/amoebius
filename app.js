@@ -82,6 +82,7 @@ app.post('/api/create_doc', pass.ensure_auth, api.create_doc);
 app.post('/api/edit_doc/:id', pass.ensure_auth, api.edit_doc);
 app.post('/api/link_doc/:id', pass.ensure_auth, api.link_doc);
 app.post('/api/delete_doc/:id', pass.ensure_auth, api.delete_doc);
+app.post('/api/unlink/:id', pass.ensure_auth, api.unlink);
 
 //post account stuff
 app.post('/account/modify_user/:id', pass.ensure_auth, account.modify_user);
