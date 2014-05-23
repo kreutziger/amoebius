@@ -2,14 +2,21 @@ var db = require('../config/db');
 var passport = require('passport');
 var User = require('../config/user.js');
 
-//exports.account
+exports.account = function(req, res) {
+    res.render('partials/account', {user: req.user,
+                message: req.session.messages});
+};
+
+exports.admin = function(req, res) {
+    res.render('partials/admin', {user: req.user,
+                message: req.session.messages});
+};
 
 exports.get_login = function(req, res) {
     res.render('partials/login', {user: req.user, 
                message: req.session.messages});
 };
 
-//exports.admin
 
 exports.post_login = function(req, res, next) {
     passport.authenticate('local', function(err, user, info) {

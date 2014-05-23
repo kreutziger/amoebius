@@ -1,0 +1,24 @@
+include back
+h3 Modify {{user.name}}
+form(action="{{'/account/modify_user/' + user._id}}", method='post')
+  div
+    label(for='name') Name
+    input(type='text', value='', name='name', id='name',
+    placeholder='{{user.name}}')
+  div
+    label(for='email') E-Mail
+    input(type='text', value='', name='email', id='email',
+    placeholder='{{user.email}}')
+  div
+    label(for='password') Password
+    input(type='password', value='', name='password', id='password',
+    placeholder='Password')
+  div
+    label(for='password2') Verfication
+    input(type='password', value='', name='password2', id='password2',
+    placeholder='Verfication')
+  div
+    label(for='admin') Admin
+    input(type='checkbox', name='admin', id='admin')
+  div
+    input(type='submit', value='modify user')
