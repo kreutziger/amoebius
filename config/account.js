@@ -165,6 +165,7 @@ exports.modify_user = function modify_user(req, res) {
             }
         });
     } else {
+        req.session.messages = [];
         res.redirect('/');
     }
 };

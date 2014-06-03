@@ -25,11 +25,11 @@ passport.use(new LocalStrategy(
             user.compare_pass(password, function(err, is_match) {
                 if (err) {
                     return done(err);
-                }                 
+                }
                 if (!is_match) {
                     return done(null, false, {message: 'incorrect user/pw'});
                 }
-                return done(null, user);
+                return done(null, user, {message: ''});
             });
         });
     })

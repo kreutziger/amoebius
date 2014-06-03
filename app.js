@@ -2,6 +2,7 @@ var express = require('express');
 
 var qr = require('qr-image');
 var stylus = require('stylus');
+var passport = require('passport');
 
 var db = require('./config/db');
 var pass = require('./config/passport');
@@ -11,7 +12,6 @@ var account = require('./config/account');
 var https = require('https');
 var http = require('http');
 var fs = require('fs');
-var passport = require('passport');
 
 //middleware for express
 var compress = require('compression');
@@ -73,6 +73,12 @@ if ('development' === app.get('env')) {
     }));
 }
 
+var msg = '';
+app.use(function(req, res, next) {
+    console.log(req.session);
+    next();
+});
+
 //general routing
 app.get('/', routes.index);
 app.get('/partials/:name', pass.ensure_auth, routes.partials);
@@ -119,6 +125,10 @@ app.get('/logout', user_routes.logout);
 
 //default route
 app.get('*', routes.index);
+
+app.use(function(req, res, next) {
+    console.log('asd', req.session.messages);
+});
 
 var server = http.createServer(app).listen(8080);
 https.createServer(ssl_options, app).listen(8443);

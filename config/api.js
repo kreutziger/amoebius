@@ -43,15 +43,16 @@ exports.create_doc = function(req, res) {
                     Docs({name: req.body.name, type: req.body.type,
                     from_user: req.user._id, create_date: Date.now(),
                     comment: req.body.comment, path: path}).save();
+                    req.session.messages = ['document created'];
                 });
             });
         } else { 
             Docs({name: req.body.name, type: req.body.type,
             from_user: req.user._id, create_date: Date.now(),
             comment: req.body.comment, path: ''}).save();
+            req.session.messages = ['empty document created'];
         }
     }
-
     res.redirect('/');
 };
 
@@ -290,13 +291,14 @@ exports.delete_doc = function(req, res) {
                         }
                     });
                 }
-                req.session.messages = 'document removed';
+                req.session.messages = ['document removed'];
             } else {
-                req.session.messages = 'error removing document';
+                req.session.messages = ['error removing document'];
             }
             res.redirect('/');
         });
     } else {
+        req.session.messages = [];
         res.redirect('/');
     }
 };
