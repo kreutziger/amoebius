@@ -22,6 +22,7 @@ var express_session = require('express-session');
 var error_handler = require('errorhandler');
 var body_parser = require('body-parser');
 var multipart = require('connect-multiparty');
+var flash = require('connect-flash');
 
 var routes = require('./routes/index');
 var user_routes = require('./routes/user');
@@ -55,6 +56,7 @@ app.use(express_session({
     name: 'doculink',
     secret: 'that-really-secret-key'
 }));
+app.use(flash());
 app.use(stylus.middleware({src: __dirname + '/views',
                           dest: __dirname + '/public',
                           debug: true
@@ -72,12 +74,6 @@ if ('development' === app.get('env')) {
         showStack: true
     }));
 }
-
-var msg = '';
-app.use(function(req, res, next) {
-    console.log(req.session);
-    next();
-});
 
 //general routing
 app.get('/', routes.index);
@@ -125,10 +121,6 @@ app.get('/logout', user_routes.logout);
 
 //default route
 app.get('*', routes.index);
-
-app.use(function(req, res, next) {
-    console.log('asd', req.session.messages);
-});
 
 var server = http.createServer(app).listen(8080);
 https.createServer(ssl_options, app).listen(8443);

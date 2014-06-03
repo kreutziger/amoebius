@@ -4,17 +4,17 @@ var User = require('../config/user.js');
 
 exports.account = function(req, res) {
     res.render('partials/account', {user: req.user,
-                message: req.session.messages});
+                message: req.flash('info')});
 };
 
 exports.admin = function(req, res) {
     res.render('partials/admin', {user: req.user,
-                message: req.session.messages});
+                message: req.flash('info')});
 };
 
 exports.get_login = function(req, res) {
     res.render('partials/login', {user: req.user, 
-               message: req.session.messages});
+               message: req.flash('info')});
 };
 
 
@@ -24,7 +24,8 @@ exports.post_login = function(req, res, next) {
             return next(err);   
         }
         if (!user) {
-            req.session.messages = [info.message];
+//            req.session.messages = [info.message];
+            req.flash('info', info.message);
             return res.redirect('/login');
         }
 

@@ -18,7 +18,7 @@ html(ng-app="amoebius")
               a(ui-sref='admin') (admin-menu)
             a(href='logout') Logout
       if message
-        p.msg= message.pop()
+        p.msg= message
       h2 Welcome to amoebius
       <div ui-view></div>
     script(src='js/lib/jquery/jquery.js')

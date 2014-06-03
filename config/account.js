@@ -17,24 +17,24 @@ exports.update_user = function(req, res) {
                         }
                         user.save(function(err, user, rows) {
                             if (!err && user !== null &&  rows === 1) {
-                                req.session.messages = ['user updated'];
+                                req.flash('info','user updated');
                             } else {
-                                req.session.messages = ['error: db error'];
+                                req.flash('info','error: db error');
                             }
                             res.redirect('/');
                         });
                     } else {
-                        req.session.messages = ['error: wrong password'];
+                        req.flash('info','error: wrong password');
                         res.redirect('/');
                     }
                 });
             } else {
-                req.session.messages = ['error: user not found'];
+                req.flash('info','error: user not found');
                 res.redirect('/');
             }
         });
     } else {
-        req.session.messages = ['no password given'];
+        req.flash('info','no password given');
         res.redirect('/');
     }
 };
@@ -55,19 +55,19 @@ exports.create_user = function create_user(req, res) {
                         new_user.admin = false;
                     }
                     new_user.save();
-                    req.session.messages = ['user saved'];
+                    req.flash('info','user saved');
                     res.redirect('/');
                 } else {
-                    req.session.messages = ['user name must be unique'];
+                    req.flash('info','user name must be unique');
                     res.redirect('/');
                 }
             });
         } else {
-            req.session.messages = ['user password verification failed'];
+            req.flash('info','user password verification failed');
             res.redirect('/');
         }
     } else {
-        req.session.messages = ['missing data'];
+        req.flash('info','missing data');
         res.redirect('/');
     }
 };
@@ -92,10 +92,10 @@ exports.delete_user = function delete_user(req, res) {
             Users.remove({_id: {$in: ids}}).exec();
             Docs.remove({from_user: {$in: ids}}).exec();
             Links.remove({from_user: {$in: ids}}).exec();
-            req.session.messages = ['user(s) deleted'];
+            req.flash('info','user(s) deleted');
             res.redirect('/');
         } else {
-            req.session.messages = ['no user(s) found'];
+            req.flash('info','no user(s) found');
             res.redirect('/#/admin');
         }
     });
@@ -153,9 +153,9 @@ exports.modify_user = function modify_user(req, res) {
                 }
                 user.save(function(err, user, rows) {
                     if (!err && user !== null && rows === 1) {
-                        req.session.messages = ['user modified'];                        
+                        req.flash('info','user modified');
                     } else {
-                        req.session.messages = ['no changes done'];
+                        req.flash('info','no changes done');
                     }                       
                     res.redirect('/');
                 });
@@ -165,7 +165,6 @@ exports.modify_user = function modify_user(req, res) {
             }
         });
     } else {
-        req.session.messages = [];
         res.redirect('/');
     }
 };

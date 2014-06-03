@@ -43,14 +43,14 @@ exports.create_doc = function(req, res) {
                     Docs({name: req.body.name, type: req.body.type,
                     from_user: req.user._id, create_date: Date.now(),
                     comment: req.body.comment, path: path}).save();
-                    req.session.messages = ['document created'];
+                    req.flash('info','document created');
                 });
             });
         } else { 
             Docs({name: req.body.name, type: req.body.type,
             from_user: req.user._id, create_date: Date.now(),
             comment: req.body.comment, path: ''}).save();
-            req.session.messages = ['empty document created'];
+            req.flash('info','empty document created');
         }
     }
     res.redirect('/');
@@ -125,13 +125,13 @@ exports.link_doc = function(req, res) {
                       from_date: now, doc_id: req.params.id, 
                       to_date: date.unix() * 1000, comment: req.body.comment
                 }).save();
-                req.session.messages = ['link successfully created'];
+                req.flash('info','link successfully created');
             } else {
-                req.session.messages = ['link could not be created'];
+                req.flash('info','link could not be created');
             }
         });
     } else {
-        req.session.messages = ['user not found'];
+        req.flash('info','user not found');
     }
     res.redirect('/');
 };
@@ -199,7 +199,7 @@ exports.edit_doc = function(req, res) {
                                     console.log(err, doc, count);
                                 }
                             });
-                            req.session.messages = ['document is updated'];
+                            req.flash('info','document is updated');
                             res.redirect('/');
                         }
                     });
@@ -212,7 +212,7 @@ exports.edit_doc = function(req, res) {
                         console.log(err, doc, count);
                     }
                 });
-                req.session.messages = ['document is updated'];
+                req.flash('info','document is updated');
                 res.redirect('/');
             }
         }    
@@ -262,12 +262,12 @@ exports.download = function(req, res) {
                             res.download(doc.path, filename.pop().
                                          split('__')[0]);
                         } else {
-                            req.session.messages = ['no document found'];
+                            req.flash('info','no document found');
                             res.redirect('/');
                         }
                     });
                 } else {
-                    req.session.messages = ['no document found'];
+                    req.flash('info','no document found');
                     res.redirect('/');
                 }
             });
@@ -291,14 +291,13 @@ exports.delete_doc = function(req, res) {
                         }
                     });
                 }
-                req.session.messages = ['document removed'];
+                req.flash('info','document removed');
             } else {
-                req.session.messages = ['error removing document'];
+                req.flash('info','error removing document');
             }
             res.redirect('/');
         });
     } else {
-        req.session.messages = [];
         res.redirect('/');
     }
 };
@@ -315,9 +314,9 @@ exports.unlink = function unlink(req, res) {
     Links.remove({to_user: {$in: ids}, doc_id: req.params.id,
                from_user: req.session.passport.user}, function(err, links) {
         if (!err && links > 0) {
-            req.session.messages = ['links removed'];           
+            req.flash('info','links removed');
         } else {
-            req.session.messages = ['no links found'];
+            req.flash('info','no links found');
         }
         res.redirect('/');
     });
