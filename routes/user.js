@@ -25,7 +25,7 @@ exports.post_login = function(req, res, next) {
         }
         if (!user) {
             req.flash('info', info.message);
-            return res.redirect('/login');
+            return res.redirect('/');
         }
 
         req.logIn(user, function(err) {

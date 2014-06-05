@@ -17,8 +17,10 @@ div(id='accordion')
           a(ui-sref='link({id: doc._id})') Link
         li.sticker 
           a(ui-sref='sticker({id: doc._id})') Sticker
-        li.download
+        li(ng-if='doc.path').download
           a(href="{{'/download/' + doc._id}}") Download
+        li(ng-if='!doc.path').download
+          a Empty 
     div(ng-if='own_message')
       h4 {{own_message}}
   h3 Linked Documents
@@ -30,7 +32,9 @@ div(id='accordion')
           a(ui-sref='delete_link({id: doc._id})') Delete
         li.sticker 
           a(ui-sref='sticker({id: doc._id})') Sticker
-        li.download
+        li(ng-if='doc.path').download
           a(href="{{'/download/' + doc._id}}") Download
+        li(ng-if='!doc.path').download
+          a Empty 
     div(ng-if='other_message')
       h4 {{other_message}}

@@ -257,7 +257,8 @@ exports.download = function(req, res) {
                        doc_id: req.params.id}, function(err, link) {
                 if (!err && link !== null) {
                     Docs.findById(req.params.id, function(err, doc) {
-                        if (!err && doc !== null && doc.path !== undefined) {
+                        if (!err && doc !== null && doc.path !== undefined &&
+                           doc.path !== '') {
                             var filename = doc.path.split('/');
                             res.download(doc.path, filename.pop().
                                          split('__')[0]);

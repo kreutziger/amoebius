@@ -35,7 +35,7 @@ var ssl_options = {
 };
 
 //configuring
-app.set('port', 8080);
+app.set('port', 8081);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
 app.set('view options', {
@@ -122,7 +122,7 @@ app.get('/logout', user_routes.logout);
 //default route
 app.get('*', routes.index);
 
-var server = http.createServer(app).listen(8080);
+var server = http.createServer(app).listen(8081);
 https.createServer(ssl_options, app).listen(8443);
 console.log('server runs on port %d, in mode %s', app.get('port'), 
             app.settings.env);
