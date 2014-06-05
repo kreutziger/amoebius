@@ -1,6 +1,8 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+//TODO remove to_date, replace with expires
+
 var link_schema = new Schema({
     from_user: {type: Schema.ObjectId, required: true},
     to_user: {type: Schema.ObjectId, required: true},

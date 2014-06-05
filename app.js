@@ -2,6 +2,7 @@ var express = require('express');
 
 var qr = require('qr-image');
 var stylus = require('stylus');
+var passport = require('passport');
 
 var db = require('./config/db');
 var pass = require('./config/passport');
@@ -11,7 +12,6 @@ var account = require('./config/account');
 var https = require('https');
 var http = require('http');
 var fs = require('fs');
-var passport = require('passport');
 
 //middleware for express
 var compress = require('compression');
@@ -22,6 +22,7 @@ var express_session = require('express-session');
 var error_handler = require('errorhandler');
 var body_parser = require('body-parser');
 var multipart = require('connect-multiparty');
+var flash = require('connect-flash');
 
 var routes = require('./routes/index');
 var user_routes = require('./routes/user');
@@ -34,7 +35,7 @@ var ssl_options = {
 };
 
 //configuring
-app.set('port', 8080);
+app.set('port', 8081);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
 app.set('view options', {
@@ -55,6 +56,7 @@ app.use(express_session({
     name: 'doculink',
     secret: 'that-really-secret-key'
 }));
+app.use(flash());
 app.use(stylus.middleware({src: __dirname + '/views',
                           dest: __dirname + '/public',
                           debug: true
@@ -120,7 +122,7 @@ app.get('/logout', user_routes.logout);
 //default route
 app.get('*', routes.index);
 
-var server = http.createServer(app).listen(8080);
+var server = http.createServer(app).listen(8081);
 https.createServer(ssl_options, app).listen(8443);
 console.log('server runs on port %d, in mode %s', app.get('port'), 
             app.settings.env);
